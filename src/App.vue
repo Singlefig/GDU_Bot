@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <div
-      class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm"
+      class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm headerContainer"
     >
       <h5 class="my-0 mr-md-auto">Get Bitcoin</h5>
       <h6 v-bind:class="connectionStateClass">Connected</h6>
     </div>
     <div class="container">
-      <table class="table table-bordered">
+      <table class="table">
         <thead class="thead-dark">
           <tr>
             <th scope="col">Bid</th>
@@ -24,7 +24,7 @@
         </tbody>
       </table>
       <div class="row">
-        <div class="col-4 infoContainer">
+        <div class="col-md infoContainer">
           <span>
             <b>Bitcoin</b> - A peer-to-peer payment system using the unit of the
             same name for accounting transactions. Cryptographic methods are
@@ -33,7 +33,7 @@
             available in clear text.
           </span>
         </div>
-        <div class="col-4 infoContainer">
+        <div class="col-md infoContainer">
           <span>
             Bitcoins can be used to exchange goods or services with sellers who
             agree to accept them. Exchange for regular currencies occurs through
@@ -47,7 +47,7 @@
             since their processing time is unknown and can be quite large.
           </span>
         </div>
-        <div class="col-4 infoContainer">
+        <div class="col-md infoContainer">
           <span>
             One of the main features of the system is complete decentralization:
             there is no central administrator or any analogue of it. A necessary
@@ -186,6 +186,8 @@ body {
 
 .footerContainer {
   margin-top: 50px;
+  color: #fff;
+  background-color: #C3073F;
 }
 
 .follow {
@@ -197,14 +199,12 @@ body {
 }
 
 .icon {
-  background-color: rgb(20, 20, 20);
-  border: 2px rgb(133, 129, 129) solid;
-  border-radius: 3px;
+  background-color: #950740;
   display: inline;
 }
 
 .icon a {
-  color: white;
+  color: #fff;
 }
 
 .icon:hover {
@@ -217,8 +217,7 @@ body {
 }
 
 .infoContainer {
-  border: 2px rgb(133, 129, 129) solid;
-  border-radius: 3px;
+  color: #4E4E50;;
 }
 
 .ticker_red,.disconnected {
@@ -227,5 +226,9 @@ body {
 
 .ticker_green,.connected {
   color: rgb(27, 233, 37);
+}
+
+body {
+  background-color: #1A1A1D;
 }
 </style>
