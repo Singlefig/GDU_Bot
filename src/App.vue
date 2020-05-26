@@ -135,6 +135,7 @@ export default {
     askClass: function() {
       if (this.prev_ticker) {
         if (this.ticker.ask < this.prev_ticker.ask) return "ticker_red";
+        else if(this.ticker.ask === this.prev_ticker.ask) return "ticker_yellow";
         return "ticker_green";
       }
       return "ticker_green";
@@ -142,6 +143,7 @@ export default {
     bidClass: function() {
       if (this.prev_ticker) {
         if (this.ticker.bid < this.prev_ticker.bid) return "ticker_red";
+        else if(this.ticker.bid === this.prev_ticker.bid) return "ticker_yellow";
         return "ticker_green";
       }
       return "ticker_green";
@@ -149,6 +151,7 @@ export default {
     dailyChangeClass: function() {
       if(this.prev_ticker) {
         if(this.ticker.daily_change < this.prev_ticker.daily_change) return "ticker_red";
+        else if(this.ticker.daily_change === this.prev_ticker.daily_change) return "ticker_yellow";
         return "ticker_green";
       }
       return "ticker_green";
@@ -226,6 +229,10 @@ body {
 
 .ticker_green,.connected {
   color: rgb(27, 233, 37);
+}
+
+.ticker_yellow {
+  color: rgb(236, 240, 42);
 }
 
 body {
