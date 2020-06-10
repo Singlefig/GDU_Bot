@@ -10,6 +10,7 @@
       <table class="table">
         <thead class="thead-dark">
           <tr>
+            <th scope="col">Name</th>
             <th scope="col">Bid</th>
             <th scope="col">Ask</th>
             <th scope="col">Daily Change(Daily Change Relative)</th>
@@ -17,9 +18,16 @@
         </thead>
         <tbody>
           <tr>
-            <td v-bind:class="askClass">{{ ticker.ask }}</td>
-            <td v-bind:class="bidClass">{{ ticker.bid }}</td>
-            <td v-bind:class="dailyChangeClass">{{ ticker.daily_change }}({{ticker.daily_change_relative}})</td>
+            <td class="nameText">{{tickerBitcoin.name}}</td>
+            <td v-bind:class="askClassBitcoin">{{ tickerBitcoin.ask }}</td>
+            <td v-bind:class="bidClassBitcoin">{{ tickerBitcoin.bid }}</td>
+            <td v-bind:class="dailyChangeClassBitcoin">{{ tickerBitcoin.daily_change }}({{tickerBitcoin.daily_change_relative}})</td>
+          </tr>
+           <tr>
+            <td class="nameText">{{tickerEphyr.name}}</td>
+            <td v-bind:class="askClassEphyr">{{ tickerEphyr.ask }}</td>
+            <td v-bind:class="bidClassEphyr">{{ tickerEphyr.bid }}</td>
+            <td v-bind:class="dailyChangeClassEphyr">{{ tickerEphyr.daily_change }}({{tickerEphyr.daily_change_relative}})</td>
           </tr>
         </tbody>
       </table>
@@ -98,6 +106,7 @@
 <script>
 var socket = io("http://localhost:4000");
 const null_ticker = {
+  name:undefined,
   bid: 0,
   ask: 0,
   daily_change: 0,
@@ -108,8 +117,10 @@ export default {
   data() {
     return {
       isConnected: false,
-      prev_ticker: undefined,
-      ticker: null_ticker
+      prev_ticker_bitcoin: undefined,
+      prev_ticker_ephyr: undefined,
+      tickerBitcoin: null_ticker,
+      tickerEphyr: null_ticker
     };
   },
   created() {
@@ -121,10 +132,15 @@ export default {
       console.log("Socket dicconnected: " + socket.disconnected);
       this.isConnected = false;
     });
-    socket.on("ticker", data => {
-      console.log("New ticker:" + JSON.stringify(data));
-      this.prev_ticker = this.ticker;
-      this.ticker = data;
+    socket.on("tickerBitcoin", data => {
+      console.log("New ticker bitcoin:" + JSON.stringify(data));
+      this.prev_ticker_bitcoin = this.tickerBitcoin;
+      this.tickerBitcoin = data;
+    });
+    socket.on("tickerEphyr", data => {
+      console.log("New ticker ephyr:" + JSON.stringify(data));
+      this.prev_ticker_ephyr = this.tickerEphyr;
+      this.tickerEphyr = data;
     });
   },
   computed: {
@@ -132,26 +148,50 @@ export default {
       if (this.isConnected) return "connected";
       return "dicconnected";
     },
-    askClass: function() {
-      if (this.prev_ticker) {
-        if (this.ticker.ask < this.prev_ticker.ask) return "ticker_red";
-        else if(this.ticker.ask === this.prev_ticker.ask) return "ticker_yellow";
+    askClassBitcoin: function() {
+      if (this.prev_ticker_bitcoin) {
+        if (this.tickerBitcoin.ask < this.prev_ticker_bitcoin.ask) return "ticker_red";
+        else if(this.tickerBitcoin.ask === this.prev_ticker_bitcoin.ask) return "ticker_yellow";
         return "ticker_green";
       }
       return "ticker_green";
     },
-    bidClass: function() {
-      if (this.prev_ticker) {
-        if (this.ticker.bid < this.prev_ticker.bid) return "ticker_red";
-        else if(this.ticker.bid === this.prev_ticker.bid) return "ticker_yellow";
+    bidClassBitcoin: function() {
+      if (this.prev_ticker_bitcoin) {
+        if (this.tickerBitcoin.bid < this.prev_ticker_bitcoin.bid) return "ticker_red";
+        else if(this.tickerBitcoin.bid === this.prev_ticker_bitcoin.bid) return "ticker_yellow";
         return "ticker_green";
       }
       return "ticker_green";
     },
-    dailyChangeClass: function() {
-      if(this.prev_ticker) {
-        if(this.ticker.daily_change < this.prev_ticker.daily_change) return "ticker_red";
-        else if(this.ticker.daily_change === this.prev_ticker.daily_change) return "ticker_yellow";
+    dailyChangeClassBitcoin: function() {
+      if(this.prev_ticker_bitcoin) {
+        if(this.tickerBitcoin.daily_change < this.prev_ticker_bitcoin.daily_change) return "ticker_red";
+        else if(this.tickerBitcoin.daily_change === this.prev_ticker_bitcoin.daily_change) return "ticker_yellow";
+        return "ticker_green";
+      }
+      return "ticker_green";
+    },
+    askClassEphyr: function() {
+      if (this.prev_ticker_ephyr) {
+        if (this.tickerEphyr.ask < this.prev_ticker_ephyr.ask) return "ticker_red";
+        else if(this.tickerEphyr.ask === this.prev_ticker_ephyr.ask) return "ticker_yellow";
+        return "ticker_green";
+      }
+      return "ticker_green";
+    },
+    bidClassEphyr: function() {
+      if (this.prev_ticker_ephyr) {
+        if (this.tickerEphyr.bid < this.prev_ticker_ephyr.bid) return "ticker_red";
+        else if(this.tickerEphyr.bid === this.prev_ticker_ephyr.bid) return "ticker_yellow";
+        return "ticker_green";
+      }
+      return "ticker_green";
+    },
+    dailyChangeClassEphyr: function() {
+      if(this.prev_ticker_ephyr) {
+        if(this.tickerEphyr.daily_change < this.prev_ticker_ephyr.daily_change) return "ticker_red";
+        else if(this.tickerEphyr.daily_change === this.prev_ticker_ephyr.daily_change) return "ticker_yellow";
         return "ticker_green";
       }
       return "ticker_green";
@@ -233,6 +273,10 @@ body {
 
 .ticker_yellow {
   color: rgb(236, 240, 42);
+}
+
+.nameText {
+  color: #fff;
 }
 
 body {

@@ -46,22 +46,35 @@ function clearTimer() {
 async function request() {
   const bitfinex_url = "https://api-pub.bitfinex.com/v2/";
 
-  const pathParams = "ticker/tBTCUSD";
+  const pathParamsBitcoin = "ticker/tBTCUSD";
+  const pathParamsEphyr = "ticker/tETHUSD";
   const queryParams = "";
 
   console.log("Request");
   try {
-    const req = await fetch(`${bitfinex_url}/${pathParams}?${queryParams}`);
-    const response = await req.json();
-    console.log("Request result:" + JSON.stringify(response));
+    const reqBitcoin = await fetch(`${bitfinex_url}/${pathParamsBitcoin}?${queryParams}`);
+    const reqEphyr = await fetch(`${bitfinex_url}/${pathParamsEphyr}?${queryParams}`);
+    const responseBitcoin = await reqBitcoin.json();
+    const responseEphyr = await reqEphyr.json();
+    console.log("Request result Bitcoin:" + JSON.stringify(responseBitcoin));
+    console.log("Request result Ephyr:" + JSON.stringify(responseEphyr));
     if (io.engine.clientsCount > 0) {
-      msg = {
-        bid: response[0],
-        ask: response[2],
-        daily_change: response[4],
-        daily_change_relative: response[5]
+      msgBitcoin = {
+        name:"Bitcoin",
+        bid: responseBitcoin[0],
+        ask: responseBitcoin[2],
+        daily_change: responseBitcoin[4],
+        daily_change_relative: responseBitcoin[5]
       };
-      io.sockets.emit("ticker", msg);
+      io.sockets.emit("tickerBitcoin", msgBitcoin);
+      msgEphyr = {
+        name:"Ephyr",
+        bid: responseEphyr[0],
+        ask: responseEphyr[2],
+        daily_change: responseEphyr[4],
+        daily_change_relative: responseEphyr[5]
+      };
+      io.sockets.emit("tickerEphyr", msgEphyr);
     }
     timer = undefined;
     startTimer();
