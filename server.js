@@ -66,7 +66,6 @@ async function request() {
         daily_change: responseBitcoin[4],
         daily_change_relative: responseBitcoin[5]
       };
-      io.sockets.emit("tickerBitcoin", msgBitcoin);
       msgEphyr = {
         name:"Ephyr",
         bid: responseEphyr[0],
@@ -74,6 +73,7 @@ async function request() {
         daily_change: responseEphyr[4],
         daily_change_relative: responseEphyr[5]
       };
+      io.sockets.emit("tickerBitcoin", msgBitcoin);
       io.sockets.emit("tickerEphyr", msgEphyr);
     }
     timer = undefined;
